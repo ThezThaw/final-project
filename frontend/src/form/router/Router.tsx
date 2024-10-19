@@ -3,6 +3,7 @@ import { AppConst } from "../../helper/AppConst";
 import Signup from "../user/Signup";
 import { Login } from "../login/Login";
 import { Layout } from "../layout/Layout";
+import Profile from "../user/Profile";
 
 export const router = createBrowserRouter([
     {
@@ -19,7 +20,7 @@ export const router = createBrowserRouter([
         children: [
             {
                 path:`${AppConst.RouteLink_Profile}`,
-                // Component: Profile
+                Component: Profile
             }
         ]
     }

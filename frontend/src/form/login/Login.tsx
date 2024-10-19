@@ -33,7 +33,7 @@ export function Login(){
         authService.login(email, password,navigate)
         .then(response => {
             if(response.status){
-                navigate(AppConst.RouteLink_Root);
+                navigate(AppConst.RouteLink_Profile);
             }else{
                 loginIdRef.current?.focus();
                 toast.error(response.message, {
@@ -54,7 +54,7 @@ export function Login(){
 
 
             <div style={{display:"flex", justifyContent:"space-around"}}>
-                <div style={{width:"70vw", textAlign:"center",marginTop:"50px"}}>
+                <div style={{width:"30vw", textAlign:"center",marginTop:"50px"}}>
                     <div>
                         <div className="brand-name">
                             CS516

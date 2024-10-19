@@ -26,7 +26,7 @@ export function SideMenu(props:any){
                 </button>
 
                 <button type="button" className="btn btn-lg" style={{marginLeft:"-25px"}} onClick={() => menuClicked(AppConst.RouteLink_Root)}>
-                    <span className="navbar-toggler-icon"><i className='fa fa-home' style={{fontSize:"x-large"}}></i></span>
+                    <span style={{fontWeight:"bolder",fontSize:"x-large",fontFamily:"sans-serif"}}>CS516 Final Project</span>
                 </button>
 
                 <div style={{width:"50vw"}} className="offcanvas offcanvas-start text-bg" tabIndex={-1} id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">

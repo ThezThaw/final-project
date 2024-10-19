@@ -1,0 +1,42 @@
+.div-img{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profile-selected{
+    height: 21vw;
+    width: 21vw;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid grey;
+    cursor: pointer;
+}
+
+.profile-unselected{
+    font-size: 20vw;
+    color: #e9eaec;
+    border: 2px dashed #666c74;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.profile-btn{
+    position: absolute;
+    margin-left: -5vw;
+    font-size: 3vw;
+    cursor: pointer;
+}
+
+.profile-add{    
+    color: #4c6eff;
+}
+
+.profile-remove{    
+    color: red;
+}
+
+.profile-btn-border{
+    border:2px solid white;
+    border-radius: 50%;
+    background-color: white;
+}

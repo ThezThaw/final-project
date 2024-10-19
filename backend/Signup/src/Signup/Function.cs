@@ -72,7 +72,9 @@ public class Function
             {
                 BucketName = profileImageS3BucketName,
                 Key = input.email,
-                Expires = DateTime.UtcNow.AddSeconds(60)
+                Expires = DateTime.UtcNow.AddSeconds(60),
+                ContentType = input.profileImageType,
+                //Verb = HttpVerb.PUT
             });
 
 
