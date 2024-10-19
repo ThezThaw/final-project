@@ -13,3 +13,8 @@ export function getLoggedInUserInfo(): AppUserVm | null {
 export function removeLoggedInUserInfo() {
     sessionStorage.removeItem('userInfo');
 } 
+
+export function updateLoggedInUserInfo(userInfo?:AppUserVm) {
+    removeLoggedInUserInfo();
+    setLoggedInUserInfo(userInfo);
+} 

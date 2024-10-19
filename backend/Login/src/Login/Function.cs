@@ -2,6 +2,7 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.Core;
 using Amazon.S3;
+using Helper;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
@@ -10,14 +11,13 @@ namespace Login;
 
 public class Function
 {
-    private const string userTblName = "user";
-
     private readonly IAmazonDynamoDB dynamoDbClient;
     private readonly IAmazonS3 s3Client;
     public Function()
     {
         this.dynamoDbClient = new AmazonDynamoDBClient();
         this.s3Client = new AmazonS3Client();
+        HelperClass.LoadEnvVariables();
     }
 
     /// <summary>
@@ -32,7 +32,7 @@ public class Function
         {
             var dbGetRequest = new GetItemRequest()
             {
-                TableName = userTblName,
+                TableName = HelperClass.userTblName,
                 Key = new Dictionary<string, AttributeValue>
                 {
                     { "email", new AttributeValue { S = input.email }  }

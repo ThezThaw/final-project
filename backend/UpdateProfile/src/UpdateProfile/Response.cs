@@ -1,9 +1,9 @@
-﻿namespace UpdateProfileImageUrl
-{
+﻿namespace UpdateProfile
+{ 
     public class Response
     {
         public bool status { get; set; }
         public string message { get; set; }
-        public string profileImageUrl { get; set; }
+        public string s3PreSignedUrl { get; set; }
     }
 }

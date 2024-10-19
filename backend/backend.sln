@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpdateProfileImageUrl", "Up
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helper", "Helper\Helper.csproj", "{DA1D8A7C-49F1-4711-A2AD-38FF9DCA45AA}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpdateProfile", "UpdateProfile\src\UpdateProfile\UpdateProfile.csproj", "{7E529786-B182-4C30-BC13-120A1D069299}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{DA1D8A7C-49F1-4711-A2AD-38FF9DCA45AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA1D8A7C-49F1-4711-A2AD-38FF9DCA45AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA1D8A7C-49F1-4711-A2AD-38FF9DCA45AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E529786-B182-4C30-BC13-120A1D069299}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E529786-B182-4C30-BC13-120A1D069299}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E529786-B182-4C30-BC13-120A1D069299}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E529786-B182-4C30-BC13-120A1D069299}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,21 +1,25 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.Core;
+using Amazon.S3;
+using BCrypt.Net;
 using Helper;
 using System.Net;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
-namespace UpdateProfileImageUrl;
+namespace UpdateProfile;
 
 public class Function
 {
     private readonly IAmazonDynamoDB dynamoDbClient;
+    private readonly IAmazonS3 s3Client;
     public Function()
-    { 
-        HelperClass.LoadEnvVariables();
+    {
         this.dynamoDbClient = new AmazonDynamoDBClient();
+        this.s3Client = new AmazonS3Client();
+        HelperClass.LoadEnvVariables();
     }
 
     /// <summary>
@@ -36,23 +40,28 @@ public class Function
                     { "email", new AttributeValue { S = input.email }  }
                 }
             };
+            var loginUser = await dynamoDbClient.GetItemAsync(dbGetRequest);
 
-            var user = await dynamoDbClient.GetItemAsync(dbGetRequest);
-            if (!user.Item.Any())
+            string currentPassword = loginUser.Item["password"].S;
+            if (input.passwordChanged)
             {
-                throw new ApplicationException($"User not found");
+                if (!BCrypt.Net.BCrypt.Verify(input.password, currentPassword))
+                {
+                    throw new ApplicationException($"Invalid old password.");
+                }
+
+                currentPassword = BCrypt.Net.BCrypt.HashPassword(input.newPassword);
             }
 
-            var profileImageUrl = $"https://{HelperClass.profileImageS3BucketName}.s3.amazonaws.com/{input.email}";
             var dbPutRequest = new PutItemRequest()
             {
                 TableName = HelperClass.userTblName,
                 Item = new Dictionary<string, AttributeValue>
                 {
                     { "email", new AttributeValue { S = input.email } },
-                    { "password", new AttributeValue { S = user.Item["password"].S } },
-                    { "name", new AttributeValue { S = user.Item["name"].S } },
-                    { "profileImage", new AttributeValue { S = profileImageUrl } }
+                    { "password", new AttributeValue { S = currentPassword } },
+                    { "name", new AttributeValue { S = input.name } },
+                    { "profileImage", new AttributeValue { S = input.imgChanged ? String.Empty : loginUser.Item["profileImage"].S } }
                 }
             };
 
@@ -62,11 +71,26 @@ public class Function
                 throw new Exception("Fail to insert record into database.");
             }
 
+
+            string s3PreSignedUrl = null;
+            if (input.imgChanged && input.profileImageType != null)
+            {
+                s3PreSignedUrl = s3Client.GetPreSignedURL(new Amazon.S3.Model.GetPreSignedUrlRequest()
+                {
+                    BucketName = HelperClass.profileImageS3BucketName,
+                    Key = input.email,
+                    Expires = DateTime.UtcNow.AddSeconds(60),
+                    ContentType = input.profileImageType,
+                    Verb = HttpVerb.PUT
+                });
+            }
+
+
             return new Response()
             {
                 status = true,
                 message = "OK",
-                profileImageUrl = profileImageUrl
+                s3PreSignedUrl = s3PreSignedUrl
             };
         }
         catch (ApplicationException ex)

@@ -7,12 +7,16 @@ import { SignupOrEditVm } from "../../model/SignupOrEditVm";
 import { loadingService } from "../../service/LoadingService";
 import { toast } from "react-toastify";
 import './Profile.css';
+import * as userService from '../../service/UserService';
+import LoadingButton from "../../component/LoadingButton";
 import { Buffer } from 'buffer';
 
 export default function Profile(){
 
     const [currentUser, setCurrentUser] = useState<AppUserVm>();
     const [pwdChange, setPwdChage] = useState(false);
+    const [isLoading, setLoading] = useState(false);
+    const [imgChanged, setImgChanged] = useState(false);
 
     const nameRef = useRef<HTMLInputElement>(null);
     const oldPasswordRef = useRef<HTMLInputElement>(null);
@@ -21,64 +25,63 @@ export default function Profile(){
 
     useEffect(() => {
 
+        loadingService.isLoading$.subscribe(l => {
+            setLoading(l);            
+        });
+
         const cu = loggedInUserInfoService.getLoggedInUserInfo();
         setCurrentUser(cu ?? undefined);
         setBase64String(cu?.img ?? '');
 
-        const btnActions: DynamicButtonAction[] = [
-            {
-                name: 'Update',
-                onClick: () => {
-                    btnUpdateRef.current?.click();
-                }
-            }
-        ];
-        
-        actionService.setActions(btnActions);
-
     },[]);
 
     const onSubmit = async (e: any) => {
+
         e.preventDefault();
         if(!e.target.reportValidity()) return;
 
-        const imgChanged = loggedInUserInfoService.getLoggedInUserInfo()?.img != base64String;
+        // const imgChanged = loggedInUserInfoService.getLoggedInUserInfo()?.img != base64String;
 
         let vm : SignupOrEditVm = {
             name: nameRef.current?.value || '',
             email: currentUser?.email || '',
-            imgChanged: imgChanged,
-            img: imgChanged ? base64String : null
+            imgChanged: imgChanged
         };
+
         if(pwdChange){
             vm.password = oldPasswordRef.current?.value;
             vm.newPassword = newPasswordRef.current?.value;
         }
 
+        if(imgChanged && selectedImage){
+            vm.imgFile = selectedImage;
+            vm.profileImageType = selectedImage.type;
+        }
+
         loadingService.setLoading(true);
-        // userService.UpdateProfile(vm)
-        // .then(response => {
-        //     if(response.status){
-        //         toast.success("Updated", {
-        //             position: "top-center",
-        //             autoClose: 1000,
-        //             // autoClose: false,
-        //             closeButton: false,
-        //             theme: "colored"
-        //           });
-        //     }else{
-        //         // console.error(response);
-        //         // alert(response.message);
-        //         toast.error(response.message, {
-        //             position: "top-center",
-        //             autoClose: 1000,
-        //             // autoClose: false,
-        //             closeButton: false,
-        //             theme: "colored"
-        //           });
-        //     }
-        // })
-        // .finally(() => loadingService.setLoading(false));
+        userService.UpdateProfile(vm)
+        .then(response => {
+            if(response.status){
+                toast.success("Updated", {
+                    position: "top-center",
+                    autoClose: 1000,
+                    // autoClose: false,
+                    closeButton: false,
+                    theme: "colored"
+                  });
+            }else{
+                // console.error(response);
+                // alert(response.message);
+                toast.error(response.message, {
+                    position: "top-center",
+                    autoClose: 1000,
+                    // autoClose: false,
+                    closeButton: false,
+                    theme: "colored"
+                  });
+            }
+        })
+        .finally(() => loadingService.setLoading(false));
     }
 
     const goingToChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
@@ -91,31 +94,43 @@ export default function Profile(){
     const targetSize = 1.5 * 1024 * 1024; // 1.5 MB
     const fileUploadRef = useRef<HTMLInputElement>(null);
     const [base64String, setBase64String] = useState('');
+    const [selectedImage, setSelectedImage] = useState<File | Blob>();
     const selectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+        if (event.target.files && event.target.files.length > 0) {
+            setSelectedImage(event.target.files[0]);
+        }
+
         const selectedFiles = event.target.files as FileList;
         selectedFiles?.[0]?.arrayBuffer().then(arrayBuffer => {
             const byteArray = new Uint8Array(arrayBuffer);
 
-            if(byteArray.length > targetSize){
-                toast.warning("Image file size is more than 1.5MB. Please use smaller size image instead.", {
-                    position: "top-center",
-                    autoClose: 5000,
-                    // autoClose: false,
-                    // closeButton: true,
-                    theme: "colored"
-                  });
-                fileUploadRef.current!.value = '';
-                return;
-            }
+            // if(byteArray.length > targetSize){
+            //     toast.warning("Image file size is more than 1.5MB. Please use smaller size image instead.", {
+            //         position: "top-center",
+            //         autoClose: 5000,
+            //         // autoClose: false,
+            //         // closeButton: true,
+            //         theme: "colored"
+            //       });
+            //     fileUploadRef.current!.value = '';
+            //     return;
+            // }
 
             const buffer = Buffer.from(byteArray);
             const base64 = buffer.toString('base64');
             setBase64String(`data:image/jpeg;base64,${base64}`);
         })
+
       };
 
-    const imgClicked = () => fileUploadRef.current?.click();
+    const imgClicked = () => {
+        setImgChanged(true);
+        fileUploadRef.current?.click();
+    };
     const imgRemoveClicked = () => {
+        setImgChanged(true);
+        setSelectedImage(undefined);
         setBase64String('');
         fileUploadRef.current!.value = '';
     }
@@ -159,7 +174,8 @@ export default function Profile(){
                                 }
 
 
-                                <button hidden className="btn btn-primary" ref={btnUpdateRef}>Update</button>
+                                {/* <button hidden className="btn btn-primary" ref={btnUpdateRef}>Update</button> */}
+                                <LoadingButton isLoading={isLoading} btnText="Update"></LoadingButton>
 
                             </form>   
                         </div>

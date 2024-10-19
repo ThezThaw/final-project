@@ -7,6 +7,9 @@ import { ActionControl } from "../../component/ActionControl";
 import { authService } from "../../service/AuthService";
 import SpeedDial from "../../component/SpeedDial";
 import { SideMenu } from "../../component/SideMenu";
+import PersonImage from "../../component/PersonImage";
+import { PersonImageInfoVm } from "../../model/PersonImageInfoVm";
+import * as loggedInUserInfoService from '../../service/LoggedInUserInfoService';
 
 export function Layout(){
 
@@ -15,7 +18,14 @@ export function Layout(){
     const [isLoading, setLoading] = useState(false);
     const chk = useRef(true);    
 
-    // const [confirmBoxInfo, setConfirmBoxInfo] = useState<ConfirmBoxInfoVm>();
+    const getPersonImageInfo = () => {
+      let info : PersonImageInfoVm = {
+          img: loggedInUserInfoService.getLoggedInUserInfo()?.img ?? '',
+          class: 'img-40 img-circle profile-img',
+          defaultClass: 'icon-35 icon-empty'
+      }
+      return info;
+  }
 
 
   useEffect(() => {
@@ -54,7 +64,20 @@ export function Layout(){
               <SideMenu navigate={navigate}></SideMenu>
             </div>
             <div style={{alignSelf:'center'}}>
-              <ActionControl actions={actions}></ActionControl>
+              {/* <ActionControl actions={actions}></ActionControl> */}
+                <div style={{display:"flex", gap:"5"}}>
+                  
+                  
+                  <div className="profile-name-sm">
+                      {loggedInUserInfoService.getLoggedInUserInfo()?.name}
+                  </div>
+
+                  <div style={{paddingRight:"5px",paddingLeft:"5px"}}></div>
+
+                  <div style={{marginRight:"10px"}}>
+                    <PersonImage info={getPersonImageInfo()}></PersonImage>
+                  </div>
+                </div>
             </div>
           </div>
           

@@ -115,6 +115,14 @@
   font-weight: bold;
 }
 
+.profile-name-sm{
+  align-self: center;
+  margin-left: 5px;
+  font-family: sans-serif;
+  font-size: x-large;
+  font-weight: bold;
+}
+
 .numFont{
   font-family: sans-serif;  
 }
