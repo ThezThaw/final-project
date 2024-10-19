@@ -4,6 +4,7 @@ import LoadingButton from "../../component/LoadingButton";
 import { SignupOrEditVm } from "../../model/SignupOrEditVm";
 import { loadingService } from "../../service/LoadingService";
 import * as userService from '../../service/UserService';
+import './Signup.css'
 
 export default function Signup()
 {
@@ -60,31 +61,41 @@ export default function Signup()
 
     return (
         <>
-            <div className="container-fluid" style={{marginTop:"50px",textAlign:"center"}}>
-                <form className="row g-3 needs-validation" onSubmit={onSubmit} noValidate>
-
-                    <div className="input-group">
-                        <span className="input-group-text">Name</span>
-                        <input id="name" type='text' ref={nameRef} className="form-control" required disabled={isLoading}></input>
+            <div style={{display:"flex", justifyContent:"space-around"}}>
+                <div style={{width:"70vw", textAlign:"center",marginTop:"50px"}}>
+                    <div>
+                        <div className="brand-name">
+                            CS516
+                        </div>                       
                     </div>
+                    <br></br>
+                    <form className="row g-3 needs-validation" onSubmit={onSubmit} noValidate>
 
-                    <div className="input-group">
-                        <span className="input-group-text">Email (Login ID)</span>
-                        <input id="loginId" type='email' ref={loginIdRef} className="form-control" placeholder="example@email.com" required disabled={isLoading}></input>
-                    </div>
+                        <div className="input-group">
+                            <span className="input-group-text">Name</span>
+                            <input id="name" type='text' ref={nameRef} className="form-control" required disabled={isLoading}></input>
+                        </div>
 
-                    <div className="input-group">
-                        <span className="input-group-text">Password</span>
-                        <input id="password" type='password' ref={passwordRef} className="form-control" required disabled={isLoading}></input>
-                    </div>
+                        <div className="input-group">
+                            <span className="input-group-text">Email</span>
+                            <input id="loginId" type='email' ref={loginIdRef} className="form-control" placeholder="example@email.com" required disabled={isLoading}></input>
+                        </div>
 
-                    <div className="input-group">
-                        <span className="input-group-text">Confirm Password</span>
-                        <input id="confirmpassword" onInput={checkPasswordMatch} type='password' ref={confirmPasswordRef} className="form-control" required disabled={isLoading}></input>
-                    </div>
-                    <LoadingButton isLoading={isLoading} btnText="Sing Up"></LoadingButton>
-                    {/* <Link to={AppConst.RouteLink_Login}>Login</Link> */}
-                </form>
+                        <div className="input-group">
+                            <span className="input-group-text">Password</span>
+                            <input id="password" type='password' ref={passwordRef} className="form-control" required disabled={isLoading}></input>
+                        </div>
+
+                        <div className="input-group">
+                            <span className="input-group-text">Confirm Password</span>
+                            <input id="confirmpassword" onInput={checkPasswordMatch} type='password' ref={confirmPasswordRef} className="form-control" required disabled={isLoading}></input>
+                        </div>
+                        <LoadingButton isLoading={isLoading} btnText="Sing Up"></LoadingButton>
+                        {/* <Link to={AppConst.RouteLink_Login}>Login</Link> */}
+                    </form>
+                    <br></br>
+                    {/* <Link to={AppConst.RouteLink_Signup}>Signup</Link> */}
+                </div>
             </div>
         </>
     );
