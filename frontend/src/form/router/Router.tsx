@@ -4,6 +4,7 @@ import Signup from "../user/Signup";
 import { Login } from "../login/Login";
 import { Layout } from "../layout/Layout";
 import Profile from "../user/Profile";
+import ProtectedRoute from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
     {
@@ -16,11 +17,11 @@ export const router = createBrowserRouter([
     },
     {
         path:AppConst.RouteLink_Root,
-        Component: Layout,
+        element: <ProtectedRoute><Layout /></ProtectedRoute>,
         children: [
             {
                 path:`${AppConst.RouteLink_Profile}`,
-                Component: Profile
+                element: <ProtectedRoute><Profile /></ProtectedRoute>,
             }
         ]
     }

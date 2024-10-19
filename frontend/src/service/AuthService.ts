@@ -5,7 +5,9 @@ import * as loggedInUserInfoService from '../service/LoggedInUserInfoService';
 import { AppUserVm } from "../model/AppUserVm";
 
 function isLoggedIn(){
-    return true;
+    const info = loggedInUserInfoService.getLoggedInUserInfo();
+    if(info) return true;
+    return false;
 }
 
 async function login(email:string, password: string, navigate: NavigateFunction){
@@ -21,6 +23,7 @@ async function login(email:string, password: string, navigate: NavigateFunction)
 }
 
 async function logout(navigate: NavigateFunction){
+    loggedInUserInfoService.removeLoggedInUserInfo();
     navigate('/login');
 }
 

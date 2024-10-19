@@ -6,6 +6,7 @@ import LoadingButton from "../../component/LoadingButton";
 import { loadingService } from "../../service/LoadingService";
 import { AppConst } from "../../helper/AppConst";
 import { authService } from "../../service/AuthService";
+import { getLoggedInUserInfo } from "../../service/LoggedInUserInfoService";
 
 export function Login(){    
     const navigate = useNavigate();
@@ -14,6 +15,11 @@ export function Login(){
     const passwordRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
+
+        const chk = getLoggedInUserInfo();
+        if(chk) navigate(AppConst.RouteLink_Root);
+
+
         loginIdRef.current?.focus();
         loadingService.isLoading$.subscribe(l => setLoading(l));
 

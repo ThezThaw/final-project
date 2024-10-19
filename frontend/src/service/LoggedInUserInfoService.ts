@@ -9,3 +9,7 @@ export function getLoggedInUserInfo(): AppUserVm | null {
     if(raw) return JSON.parse(raw);
     return null;
 } 
+
+export function removeLoggedInUserInfo() {
+    sessionStorage.removeItem('userInfo');
+} 
