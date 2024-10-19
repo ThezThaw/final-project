@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Signup", "Signup\src\Signup
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Login", "Login\src\Login\Login.csproj", "{833D45FE-7188-4782-9674-3AAACECD9A69}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UpdateProfileImageUrl", "UpdateProfileImageUrl\src\UpdateProfileImageUrl\UpdateProfileImageUrl.csproj", "{1E14B51B-B0F1-46DE-941A-569C21933448}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helper", "Helper\Helper.csproj", "{DA1D8A7C-49F1-4711-A2AD-38FF9DCA45AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{833D45FE-7188-4782-9674-3AAACECD9A69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{833D45FE-7188-4782-9674-3AAACECD9A69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{833D45FE-7188-4782-9674-3AAACECD9A69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E14B51B-B0F1-46DE-941A-569C21933448}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E14B51B-B0F1-46DE-941A-569C21933448}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E14B51B-B0F1-46DE-941A-569C21933448}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E14B51B-B0F1-46DE-941A-569C21933448}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA1D8A7C-49F1-4711-A2AD-38FF9DCA45AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA1D8A7C-49F1-4711-A2AD-38FF9DCA45AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA1D8A7C-49F1-4711-A2AD-38FF9DCA45AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA1D8A7C-49F1-4711-A2AD-38FF9DCA45AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

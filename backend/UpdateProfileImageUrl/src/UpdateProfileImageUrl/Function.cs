@@ -1,27 +1,22 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.Core;
-using Amazon.S3;
 using Helper;
 using System.Net;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
-namespace Signup;
+namespace UpdateProfileImageUrl;
 
 public class Function
 {
     private readonly IAmazonDynamoDB dynamoDbClient;
-    private readonly IAmazonS3 s3Client;
     public Function()
-    {
-        this.dynamoDbClient = new AmazonDynamoDBClient();
-        this.s3Client = new AmazonS3Client();
+    { 
         HelperClass.LoadEnvVariables();
+        this.dynamoDbClient = new AmazonDynamoDBClient();
     }
-
-
 
     /// <summary>
     /// A simple function that takes a string and does a ToUpper
@@ -42,12 +37,11 @@ public class Function
                 }
             };
 
-            var existing = await dynamoDbClient.GetItemAsync(dbGetRequest);
-            if (existing.Item.Any())
+            var user = await dynamoDbClient.GetItemAsync(dbGetRequest);
+            if (!user.Item.Any())
             {
-                throw new ApplicationException($"{input.email} already exists.");
+                throw new ApplicationException($"User not found");
             }
-
 
             var dbPutRequest = new PutItemRequest()
             {
@@ -55,9 +49,9 @@ public class Function
                 Item = new Dictionary<string, AttributeValue>
                 {
                     { "email", new AttributeValue { S = input.email } },
-                    { "password", new AttributeValue { S = BCrypt.Net.BCrypt.HashPassword(input.password) } },
-                    { "name", new AttributeValue { S = input.name } },
-                    { "profileImage", new AttributeValue { S = String.Empty } }
+                    { "password", new AttributeValue { S = user.Item["password"].S } },
+                    { "name", new AttributeValue { S = user.Item["name"].S } },
+                    { "profileImage", new AttributeValue { S = $"https://{HelperClass.profileImageS3BucketName}.s3.amazonaws.com/{input.email}" } }
                 }
             };
 
@@ -67,23 +61,10 @@ public class Function
                 throw new Exception("Fail to insert record into database.");
             }
 
-            var s3PreSignedUrl = s3Client.GetPreSignedURL(new Amazon.S3.Model.GetPreSignedUrlRequest()
-            {
-                BucketName = HelperClass.profileImageS3BucketName,
-                Key = input.email,
-                Expires = DateTime.UtcNow.AddSeconds(60),
-                ContentType = input.profileImageType,
-                Verb = HttpVerb.PUT
-            });
-
-
-
-
             return new Response()
             {
                 status = true,
-                message = "OK",
-                s3PreSignedUrl = s3PreSignedUrl
+                message = "OK"
             };
         }
         catch (ApplicationException ex)

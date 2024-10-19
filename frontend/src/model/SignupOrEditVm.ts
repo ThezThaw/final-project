@@ -6,5 +6,6 @@ export interface SignupOrEditVm{
     newPassword?: string | null;
     imgChanged: boolean;
     profileImageType?: string;
+    // profileImageName?: string;
     imgFile?: File | Blob | undefined;
 }

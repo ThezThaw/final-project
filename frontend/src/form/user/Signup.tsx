@@ -4,7 +4,6 @@ import LoadingButton from "../../component/LoadingButton";
 import { SignupOrEditVm } from "../../model/SignupOrEditVm";
 import { loadingService } from "../../service/LoadingService";
 import * as userService from '../../service/UserService';
-import './Signup.css'
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { Buffer } from 'buffer';
@@ -77,7 +76,7 @@ export default function Signup()
         }
       }
 
-    const onSubmit = (e: any) => {
+    const onSubmit = async (e: any) => {
         e.preventDefault();
         if(!e.target.reportValidity()) return;
 
@@ -95,6 +94,7 @@ export default function Signup()
             image.append(vm.email,selectedImage);
             vm.imgFile = selectedImage;
             vm.profileImageType = selectedImage.type;
+            // vm.profileImageName = encodeURIComponent(selectedImageName);
         }
 
         loadingService.setLoading(true);
@@ -102,9 +102,20 @@ export default function Signup()
         .then(response => {
             if(response.status){
                 navigate(AppConst.RouteLink_Profile);
+
+                if(response?.showWarning){
+                    toast.warning(response.message, {
+                        position: "top-center",
+                        autoClose: 3000,
+                        // autoClose: false,
+                        closeButton: false,
+                        theme: "colored"
+                      });
+                }
+
             }else{
                 console.error(response);
-                toast.error(response.message, {
+                toast.error(response?.message, {
                     position: "top-center",
                     autoClose: 1000,
                     // autoClose: false,
@@ -123,7 +134,8 @@ export default function Signup()
                     <div>
                         <div className="brand-name">
                             CS516
-                        </div>                       
+                        </div>     
+                        <div className="brand-sub-name">Final Project</div>                                         
                     </div>
                     <br></br>
 

@@ -58,7 +58,8 @@ export function Login(){
                     <div>
                         <div className="brand-name">
                             CS516
-                        </div>                       
+                        </div>        
+                        <div className="brand-sub-name">Final Project</div>                                                        
                     </div>
                     <br></br>
                     <form onSubmit={loginClicked} className="row g-3 needs-validation" noValidate>
