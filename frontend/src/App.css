@@ -1,7 +1,7 @@
 .Toastify__toast-container {
   width: 80vw !important; 
   margin-top: 5px !important;
-  margin-left: 10vw !important;
+  /* margin-left: 10vw !important; */
 }
 
 .App {

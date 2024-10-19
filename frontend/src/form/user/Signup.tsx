@@ -5,6 +5,7 @@ import { SignupOrEditVm } from "../../model/SignupOrEditVm";
 import { loadingService } from "../../service/LoadingService";
 import * as userService from '../../service/UserService';
 import './Signup.css'
+import { toast } from "react-toastify";
 
 export default function Signup()
 {
@@ -47,13 +48,13 @@ export default function Signup()
                 //navigate(AppConst.RouteLink_Home);
             }else{
                 console.error(response);
-                // toast.error(response.message, {
-                //     position: "top-center",
-                //     autoClose: 1000,
-                //     // autoClose: false,
-                //     closeButton: false,
-                //     theme: "colored"
-                //   });
+                toast.error(response.message, {
+                    position: "top-center",
+                    autoClose: 1000,
+                    // autoClose: false,
+                    closeButton: false,
+                    theme: "colored"
+                  });
             }
         })
         .finally(() => loadingService.setLoading(false));

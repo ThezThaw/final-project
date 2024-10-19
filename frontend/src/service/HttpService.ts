@@ -43,7 +43,6 @@ export async function post<T>(endpoint:string, param:any){
     })
     .then(async (response) => {
         if(response.ok){
-            debugger;
             let result = await response.json();
             return result;// as CommonResponseVm<T>;
 
