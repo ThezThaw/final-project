@@ -55,7 +55,13 @@ public class Function
             return new Response()
             {
                 status = true,
-                message = "OK"
+                message = "OK",
+                loggedInUserInfo = new AppUserVm()
+                { 
+                    name = loginUser.Item["name"].S,
+                    email = loginUser.Item["email"].S,
+                    img = loginUser.Item["profileImage"].S
+                }
             };
 
         }

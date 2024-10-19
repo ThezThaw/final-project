@@ -6,10 +6,11 @@ import { loadingService } from "../../service/LoadingService";
 import * as userService from '../../service/UserService';
 import './Signup.css'
 import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Signup()
 {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const [isLoading, setLoading] = useState(false);
     
     const nameRef = useRef<HTMLInputElement>(null);
@@ -19,6 +20,9 @@ export default function Signup()
 
     useEffect(()=>{
         nameRef.current?.focus();
+        loadingService.isLoading$.subscribe(l => {
+            setLoading(l);            
+        });
     },[]);
 
     const checkPasswordMatch = () => {
@@ -41,11 +45,10 @@ export default function Signup()
         };
 
         loadingService.setLoading(true);
-        // userService.SignUp(vm, navigate)
-        userService.SignUp(vm)
+        userService.SignUp(vm, navigate)
         .then(response => {
             if(response.status){
-                //navigate(AppConst.RouteLink_Home);
+                navigate(AppConst.RouteLink_Root);
             }else{
                 console.error(response);
                 toast.error(response.message, {
@@ -92,10 +95,9 @@ export default function Signup()
                             <input id="confirmpassword" onInput={checkPasswordMatch} type='password' ref={confirmPasswordRef} className="form-control" required disabled={isLoading}></input>
                         </div>
                         <LoadingButton isLoading={isLoading} btnText="Sing Up"></LoadingButton>
-                        {/* <Link to={AppConst.RouteLink_Login}>Login</Link> */}
+                        <Link to={AppConst.RouteLink_Login}>Login</Link>
                     </form>
                     <br></br>
-                    {/* <Link to={AppConst.RouteLink_Signup}>Signup</Link> */}
                 </div>
             </div>
         </>
