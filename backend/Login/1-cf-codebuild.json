@@ -1,0 +1,240 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters":{
+      "S3BucketName": {
+            "Type": "String",
+            "Description": "cs516-codebuild",
+            "Default": "cs516-codebuild"
+        }
+    },
+    "Resources": {      
+      "CodePipelineServiceRole": {
+        "Type": "AWS::IAM::Role",
+        "Properties": {
+          "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "codepipeline.amazonaws.com"
+                },
+                "Action": "sts:AssumeRole"
+              }
+            ]
+          },
+          "Policies": [
+            {
+              "PolicyName": "CodePipelinePolicy",
+              "PolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "s3:*",
+                      "codebuild:*",
+                      "codepipeline:*",
+                      "iam:PassRole"
+                    ],
+                    "Resource": "*"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "CodeBuildServiceRole": {
+        "Type": "AWS::IAM::Role",
+        "Properties": {
+          "AssumeRolePolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Effect": "Allow",
+                "Principal": {
+                  "Service": "codebuild.amazonaws.com"
+                },
+                "Action": "sts:AssumeRole"
+              }
+            ]
+          },
+          "Policies": [
+            {
+              "PolicyName": "CodeBuildS3Access",
+              "PolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "s3:PutObject",
+                      "s3:GetObject",
+                      "s3:ListBucket"
+                    ],
+                    "Resource": {
+                      "Fn::Sub": "arn:aws:s3:::cs516-codebuild/*"
+                    }
+                  },
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "logs:CreateLogGroup",
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents"
+                    ],
+                    "Resource": "*"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "CodeBuildProject": {
+        "Type": "AWS::CodeBuild::Project",
+        "Properties": {
+          "Name": "LoginCodeBuild",
+          "ServiceRole": {
+            "Fn::GetAtt": ["CodeBuildServiceRole", "Arn"]
+          },
+          "Artifacts": {
+            "Type": "S3",
+            "Location": {
+              "Ref": "S3BucketName"
+            }
+          },
+          "Environment": {
+            "ComputeType": "BUILD_GENERAL1_SMALL",
+            "Image": "aws/codebuild/amazonlinux2-x86_64-standard:5.0",
+            "Type": "LINUX_CONTAINER"
+          },
+          "Source": {
+            "Type": "GITHUB",
+            "Location": "https://github.com/ThezThaw/final-project.git",
+            "BuildSpec": {
+              "Fn::Join": [
+                "\n",
+                [
+                  "version: 0.2",
+                  "phases:",
+                  "  install:",
+                  "    runtime-versions:",
+                  "      dotnet: 8.0",
+                  "    commands:",
+                  "      - dotnet tool install -g Amazon.Lambda.Tools",
+                  "  build:",
+                  "    commands:",
+                  "      - cd backend/Login/src/Login", 
+                  "      - dotnet restore",
+                  "      - dotnet lambda package -o /codebuild/output/login_build.zip",
+                  "artifacts:",
+                  "  files:",
+                  "    - '**/*'",
+                  "  base-directory: /codebuild/output"
+                ]
+              ]
+            }
+          },
+          "SourceVersion": "main"
+        }
+      },
+      "CodePipeline": {
+        "Type": "AWS::CodePipeline::Pipeline",
+        "Properties": {
+          "RoleArn": {
+            "Fn::GetAtt": ["CodePipelineServiceRole", "Arn"]
+          },
+          "Stages": [
+            {
+              "Name": "Source",
+              "Actions": [
+                {
+                  "Name": "SourceAction",
+                  "ActionTypeId": {
+                    "Category": "Source",
+                    "Owner": "ThirdParty",
+                    "Provider": "GitHub",
+                    "Version": "1"
+                  },
+                  "OutputArtifacts": [
+                    {
+                      "Name": "SourceOutput"
+                    }
+                  ],
+                  "Configuration": {
+                    "Owner": "ThezThaw",
+                    "Repo": "final-project",
+                    "Branch": "main",
+                    "OAuthToken": "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"
+                  }
+                }
+              ]
+            },
+            {
+              "Name": "Build",
+              "Actions": [
+                {
+                  "Name": "BuildAction",
+                  "ActionTypeId": {
+                    "Category": "Build",
+                    "Owner": "AWS",
+                    "Provider": "CodeBuild",
+                    "Version": "1"
+                  },
+                  "InputArtifacts": [
+                    {
+                      "Name": "SourceOutput"
+                    }
+                  ],
+                  "OutputArtifacts": [
+                    {
+                      "Name": "BuildOutput"
+                    }
+                  ],
+                  "Configuration": {
+                    "ProjectName": {
+                      "Ref": "CodeBuildProject"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "Name": "Deploy",
+              "Actions": [
+                {
+                  "Name": "DeployAction",
+                  "ActionTypeId": {
+                    "Category": "Deploy",
+                    "Owner": "AWS",
+                    "Provider": "S3",
+                    "Version": "1"
+                  },
+                  "InputArtifacts": [
+                    {
+                      "Name": "BuildOutput"
+                    }
+                  ],
+                  "Configuration": {
+                    "BucketName": {
+                      "Ref": "S3BucketName"
+                    },
+                    "Extract": "true"
+                  }
+                }
+              ]
+            }
+          ],
+          "ArtifactStore": {
+            "Type": "S3",
+            "Location": {
+              "Ref": "S3BucketName"
+            }
+          }
+        }
+      }
+    }
+  }
+  
