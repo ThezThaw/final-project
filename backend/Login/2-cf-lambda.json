@@ -60,7 +60,7 @@
                                         "dynamodb:*"
                                     ],
                                     "Resource": {
-                                        "Fn::Sub" : "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/user"
+                                        "Fn::Sub" : "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/demo_user"
                                     }
                                 }
                             ]

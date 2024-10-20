@@ -38,6 +38,9 @@
           "IntegrationResponses": [
             {
               "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              },
               "ResponseTemplates": {
                 "application/json": ""
               }
@@ -47,6 +50,9 @@
         "MethodResponses": [
           {
             "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true
+            },
             "ResponseModels": {
               "application/json": "Empty"
             }
@@ -62,6 +68,48 @@
           "Ref": "ApiGatewayRestApi"
         },
         "StageName": "demo-login"
+      }
+    },
+    "OptionsMethod": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "OPTIONS",
+        "AuthorizationType": "NONE",
+        "ResourceId": {
+          "Fn::GetAtt": ["ApiGatewayRestApi", "RootResourceId"]
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET,POST'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ],
+          "Type": "MOCK"
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            },
+            "ResponseModels": {
+              "application/json": "Empty"
+            }
+          }
+        ]
       }
     },
     "LambdaApiGatewayPermission": {
