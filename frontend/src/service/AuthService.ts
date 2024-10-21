@@ -3,6 +3,7 @@ import { NavigateFunction } from "react-router-dom";
 import { LoginRequestVm } from "../model/LoginVm";
 import * as loggedInUserInfoService from '../service/LoggedInUserInfoService';
 import { AppUserVm } from "../model/AppUserVm";
+import url from '../url.json';
 
 function isLoggedIn(){
     const info = loggedInUserInfoService.getLoggedInUserInfo();
@@ -15,7 +16,8 @@ async function login(email:string, password: string, navigate: NavigateFunction)
         email:email,
         password:password
     }    
-    let response = await httpService.post('https://9pkgx0hslk.execute-api.us-east-1.amazonaws.com/demo-login',vm);
+
+    let response = await httpService.post(url["login"],vm);
     if(response.status){
         loggedInUserInfoService.setLoggedInUserInfo(response.loggedInUserInfo as AppUserVm);
     }
