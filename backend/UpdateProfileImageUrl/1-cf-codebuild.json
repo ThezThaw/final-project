@@ -128,7 +128,7 @@
                   "    commands:",
                   "      - cd backend/UpdateProfileImageUrl/src/UpdateProfileImageUrl", 
                   "      - dotnet restore",
-                  "      - dotnet lambda package -o /codebuild/output/updateprofileimgurl_build.zip",
+                  "OAuthToken": "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"
                   "artifacts:",
                   "  files:",
                   "    - '**/*'",

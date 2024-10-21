@@ -100,7 +100,7 @@
       "CodeBuildProject": {
         "Type": "AWS::CodeBuild::Project",
         "Properties": {
-          "Name": "CS516-fp-StaticWebsiteBuild",
+          "Name": "CS516-fp-UiBuild",
           "ServiceRole": {
             "Fn::GetAtt": ["CodeBuildServiceRole", "Arn"]
           },
@@ -162,14 +162,14 @@
                   },
                   "OutputArtifacts": [
                     {
-                      "Name": "SourceOutput"
+                      "Name": "UiSOut"
                     }
                   ],
                   "Configuration": {
                     "Owner": "ThezThaw",
                     "Repo": "final-project",
                     "Branch": "main",
-                    "OAuthToken": "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"
+                    "OAuthToken": "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"
                   }
                 }
               ]
@@ -187,12 +187,12 @@
                   },
                   "InputArtifacts": [
                     {
-                      "Name": "SourceOutput"
+                      "Name": "UiSOut"
                     }
                   ],
                   "OutputArtifacts": [
                     {
-                      "Name": "BuildOutput"
+                      "Name": "UiBOut"
                     }
                   ],
                   "Configuration": {
@@ -216,7 +216,7 @@
                   },
                   "InputArtifacts": [
                     {
-                      "Name": "BuildOutput"
+                      "Name": "UiBOut"
                     }
                   ],
                   "Configuration": {

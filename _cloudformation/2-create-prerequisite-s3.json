@@ -48,7 +48,16 @@
             "IgnorePublicAcls": true,
             "BlockPublicPolicy": false,
             "RestrictPublicBuckets": false
-            }
+            },
+          "CorsConfiguration": {
+            "CorsRules": [
+              {
+                "AllowedOrigins": ["*"],  
+                "AllowedMethods": ["GET", "POST", "PUT", "DELETE"],  
+                "AllowedHeaders": ["*"]
+              }
+            ]
+          }
         }
       },
       "ProfileImageBucketBucketPolicy": {
@@ -63,7 +72,10 @@
             {
               "Effect": "Allow",
               "Principal": "*",
-              "Action": "s3:GetObject",
+              "Action": [
+                "s3:GetObject",
+                "s3:PutObject"
+              ],
               "Resource": {
                 "Fn::Sub": "arn:aws:s3:::cs516-fp-profile-image/*"
               }
