@@ -1,6 +1,6 @@
 {
-    "login":"https://9pkgx0hslk.execute-api.us-east-1.amazonaws.com/demo-login",
-    "signup":"https://uue0is7du0.execute-api.us-east-1.amazonaws.com/demo-signup",
-    "update_profile":"https://pwhe5vxq2k.execute-api.us-east-1.amazonaws.com/demo-updateprofile",
-    "update_profile_imgurl":"https://ehxmzjbf9j.execute-api.us-east-1.amazonaws.com/demo-updateimgurl"
+    "login":"https://jew4ezncpd.execute-api.us-east-1.amazonaws.com/demo-login",
+    "signup":"https://skdiqrbl78.execute-api.us-east-1.amazonaws.com/demo-signup",
+    "update_profile":"https://th0incjdn0.execute-api.us-east-1.amazonaws.com/demo-updateprofile",
+    "update_profile_imgurl":"https://gyq6p49gu3.execute-api.us-east-1.amazonaws.com/demo-updateimgurl"
 }
