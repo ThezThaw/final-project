@@ -74,7 +74,7 @@
                       "s3:ListBucket"
                     ],
                     "Resource": {
-                      "Fn::Sub": "arn:aws:s3:::cs516-codebuild/*"
+                      "Fn::Sub": "arn:aws:s3:::cs516-fp-codebuild/*"
                     }
                   },
                   {
@@ -160,14 +160,14 @@
                   },
                   "OutputArtifacts": [
                     {
-                      "Name": "SourceOutput"
+                      "Name": "LiSOut"
                     }
                   ],
                   "Configuration": {
                     "Owner": "ThezThaw",
                     "Repo": "final-project",
                     "Branch": "main",
-                    "OAuthToken": "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"
+                    "OAuthToken": "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"
                   }
                 }
               ]
@@ -185,12 +185,12 @@
                   },
                   "InputArtifacts": [
                     {
-                      "Name": "SourceOutput"
+                      "Name": "LiSOut"
                     }
                   ],
                   "OutputArtifacts": [
                     {
-                      "Name": "BuildOutput"
+                      "Name": "LiBOut"
                     }
                   ],
                   "Configuration": {
@@ -214,7 +214,7 @@
                   },
                   "InputArtifacts": [
                     {
-                      "Name": "BuildOutput"
+                      "Name": "LiBOut"
                     }
                   ],
                   "Configuration": {
