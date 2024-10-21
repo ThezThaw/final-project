@@ -11,7 +11,7 @@
                     "Fn::GetAtt": ["LambdaExecutionRole", "Arn"]
                 },
                 "Code": {
-                    "S3Bucket": "cs516-codebuild",
+                    "S3Bucket": "cs516-fp-codebuild",
                     "S3Key": "login_build.zip"
                 },
                 "MemorySize": 256,
