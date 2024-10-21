@@ -15,7 +15,7 @@ async function login(email:string, password: string, navigate: NavigateFunction)
         email:email,
         password:password
     }    
-    let response = await httpService.post('https://y34xdwob09.execute-api.us-east-1.amazonaws.com/demo-login',vm);
+    let response = await httpService.post('https://9pkgx0hslk.execute-api.us-east-1.amazonaws.com/demo-login',vm);
     if(response.status){
         loggedInUserInfoService.setLoggedInUserInfo(response.loggedInUserInfo as AppUserVm);
     }
