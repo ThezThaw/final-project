@@ -97,7 +97,11 @@ pause
 #######################################################################################
 
 
+Write-Host 'Deploying UI ...'  -ForegroundColor Green -BackgroundColor Black
 
 $scriptFilePath = $PSScriptRoot + "\frontend\_cloudformation\2_deploy_pipeline.ps1"
 $checkpoint_job = Start-Job -Name "deploy ui" -ScriptBlock { & $using:scriptFilePath }
 Wait-Job $checkpoint_job
+
+
+Write-Host 'UI Deployed. Check code build'  -ForegroundColor Green -BackgroundColor Black
