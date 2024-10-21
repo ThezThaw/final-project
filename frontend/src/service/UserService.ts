@@ -6,7 +6,7 @@ import axios from 'axios';
 import { getLoggedInUserInfo, updateLoggedInUserInfo } from './LoggedInUserInfoService';
 
 export async function SignUp(vm: SignupOrEditVm, navigate: NavigateFunction){
-    const signup_response = await httpService.post(`https://a5lzmspp13.execute-api.us-east-1.amazonaws.com/signup`,vm);
+    const signup_response = await httpService.post(`https://26xmz0kmx5.execute-api.us-east-1.amazonaws.com/demo-signup`,vm);
     if(signup_response.status){
 
         if(!vm.profileImageType) return await authService.login(vm.email, vm.password || '', navigate);
@@ -22,7 +22,7 @@ export async function SignUp(vm: SignupOrEditVm, navigate: NavigateFunction){
                 "email": vm.email
             };
 
-            var updateUrl_response = await axios.post(`https://v7qpmyy7ac.execute-api.us-east-1.amazonaws.com/update-profileimageurl`, email);
+            var updateUrl_response = await axios.post(`https://ld5ioasko7.execute-api.us-east-1.amazonaws.com/demo-updateimgurl`, email);
             if(!updateUrl_response.data.status){
                 throw Error(updateUrl_response.data.message);
             }
@@ -40,13 +40,13 @@ export async function SignUp(vm: SignupOrEditVm, navigate: NavigateFunction){
     return signup_response;
 }
 
-export async function UploadProfileImageToS3(s3url: string,image: FormData){
-    const response = await httpService.post(`${s3url}`,image);
-    return response;
-}
+// export async function UploadProfileImageToS3(s3url: string,image: FormData){
+//     const response = await httpService.post(`${s3url}`,image);
+//     return response;
+// }
 
 export async function UpdateProfile(vm: SignupOrEditVm){
-    const update_response = await httpService.post(`https://cpa53ntnh7.execute-api.us-east-1.amazonaws.com/update_profile`,vm);
+    const update_response = await httpService.post(`https://5uhdf8ipk8.execute-api.us-east-1.amazonaws.com/demo-updateprofile`,vm);
     if(update_response.status){
         let currentLoginUserInfo = getLoggedInUserInfo();
         if(currentLoginUserInfo){
