@@ -1,6 +1,6 @@
 aws cloudformation deploy ^
 --profile cfadmin ^
---stack-name fp-deploy-dynamodb-table ^
---template-file 2-create-dynamodb-table.json ^
+--stack-name fp-deploy-frontend-pipeline ^
+--template-file 2_setup_pipeline.json ^
 --region us-east-1 ^
 --capabilities CAPABILITY_IAM

@@ -1,6 +1,6 @@
 aws cloudformation deploy ^
 --profile cfadmin ^
---stack-name fp-deploy-s3-codebuild-bucket ^
---template-file 1-create-codebuild-s3-bucket.json ^
+--stack-name fp-deploy-dynamodb-table ^
+--template-file 1-create-dynamodb-table.json ^
 --region us-east-1 ^
 --capabilities CAPABILITY_IAM
