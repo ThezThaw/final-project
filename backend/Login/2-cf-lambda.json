@@ -18,7 +18,7 @@
                 "Timeout": 30,
                 "Environment": {
                     "Variables": {
-                        "userTblName": "user",
+                        "userTblName": "demo-user",
                         "profileImageS3BucketName": "cs516-fp-profile-image"
                     }
                 }
